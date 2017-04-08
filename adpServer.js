@@ -7,30 +7,60 @@ var
   , flash = require("connect-flash")
   , passport = require("passport")
   , LocalStrategy = require("passport-local")
-  , CONST = require("./constants.js")
+  , CONST = require("./adpConstants.js")
   
   // Models
-  , mongoConnect = require("./models-mongoose/mongoConnect")
-  , usersModel = require("./models-mongoose/users")
+  , mongoConnect = require("./adp-mongoose/mongoConnect")
+  , usersModel = require("./adp-mongoose/users")
   
   //Routes
   , routes = require('./routes')
   , usersRoutes = require("./routes/users")
-  , shopifyOperationsRoutes = require('./routes/shopify-operations')
 
-//auth support
+//passport configuration
 passport.serializeUser(usersRoutes.serialize)
 passport.deserializeUser(usersRoutes.deserialize)
 passport.use(usersRoutes.strategy)
 
 var app = express();
 
-/*
-  viewPath: '/node_modules/ui-product-manager'
-  staticPath: '/node_modules/ui-product-manager'
-*/
+mongoConnect.connect(CONST.MONGODB_URI, function(err) {
+  if(err) throw err
+})
+
+usersRoutes.configure({
+  users: usersModel
+  , passport: passport
+})
+
+//app routes
+app.get('/', routes.index);
+
+//handle logout
+app.get('/logout', usersRoutes.doLogout)
+
+//check registered client and do login
+app.get('/initshopify'
+  , usersRoutes.initShopify
+  , passport.authenticate('local', {failureRedirect: '/', failureFlash: true})
+  , usersRoutes.postLogin)
+
+//redirect uri to get access token
+app.get('/registerclient'
+  , usersRoutes.registerClient
+  , passport.authenticate('local', {failureRedirect: '/', failureFlash: true})
+  , usersRoutes.postLogin)
+  
+  
+
+exports.app = app
 
 exports.configureApp = function(config) {
+  /*
+    viewPath: '/node_modules/ui-product-manager'
+    staticPath: '/node_modules/ui-product-manager'
+  */
+  
   app.configure(function(){
     app.set('port', process.env.PORT || 3000);
     app.set('views', __dirname + config.viewPath);

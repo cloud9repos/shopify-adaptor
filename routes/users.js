@@ -142,19 +142,19 @@ module.exports.registerClient = function(req, res, next) {
 
 var 
     extractStoreName = function(shop) {
-    var splitedshopdomain = shop.split('.')
-        , storeName = ""
-        
-    for(var j=0; j<splitedshopdomain.length; j++) {
-        if(j===0) {
-            storeName = storeName + splitedshopdomain[j]
+        var splitedshopdomain = shop.split('.')
+            , storeName = ""
+            
+        for(var j=0; j<splitedshopdomain.length; j++) {
+            if(j===0) {
+                storeName = storeName + splitedshopdomain[j]
+            }
+            else if(splitedshopdomain[j] === 'myshopify') break
+            else storeName = storeName + splitedshopdomain[j]
         }
-        else if(splitedshopdomain[j] === 'myshopify') break
-        else storeName = storeName + splitedshopdomain[j]
+            
+        return storeName
     }
-        
-    return storeName
-}
     
     , addUpdateUser = function(userObj, callback) {
         users.findByUsername(userObj.storeName, function(err, doc) {

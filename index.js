@@ -1,5 +1,5 @@
 
 
-var server = require('./server.js')
+var adpServer = require('./adpServer.js')
 
-module.exports = server
+module.exports = adpServer
