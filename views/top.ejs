@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Head title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+    </head>
+    <body>
+        <h1>body title</h1>
+        <div class='navbar'>
+            <% if(user) { %>
+            | <a href='/logout'> Log Out</a>
+            | logged in as <a href='/account'><%= user.username %></a>
+            <% } else { %>
+            | <a href='/login'> Log in</a>
+            <% } %>
+        </div>
+    
