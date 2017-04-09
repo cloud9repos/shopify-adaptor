@@ -8,6 +8,7 @@ var
   , passport = require("passport")
   , LocalStrategy = require("passport-local")
   , CONST = require("./adpConstants.js")
+  , _ = require('lodash')
   
   // Models
   , mongoConnect = require("./adp-mongoose/mongoConnect")
@@ -17,45 +18,65 @@ var
   , routes = require('./routes')
   , usersRoutes = require("./routes/users")
 
-//passport configuration
-passport.serializeUser(usersRoutes.serialize)
-passport.deserializeUser(usersRoutes.deserialize)
-passport.use(usersRoutes.strategy)
+
 
 var app = express();
 
-mongoConnect.connect(CONST.MONGODB_URI, function(err) {
-  if(err) throw err
-})
-
-usersRoutes.configure({
-  users: usersModel
-  , passport: passport
-})
-
-//app routes
-app.get('/', routes.index);
-
-//handle logout
-app.get('/logout', usersRoutes.doLogout)
-
-//check registered client and do login
-app.get('/initshopify'
-  , usersRoutes.initShopify
-  , passport.authenticate('local', {failureRedirect: '/', failureFlash: true})
-  , usersRoutes.postLogin)
-
-//redirect uri to get access token
-app.get('/registerclient'
-  , usersRoutes.registerClient
-  , passport.authenticate('local', {failureRedirect: '/', failureFlash: true})
-  , usersRoutes.postLogin)
+exports.adpInitConfig = function(parentConst) {
+  usersRoutes.inheritConstant(parentConst)
+  routes.inheritConstant(parentConst)
   
+  //passport configuration
+  passport.serializeUser(usersRoutes.serialize)
+  passport.deserializeUser(usersRoutes.deserialize)
+  passport.use(usersRoutes.strategy)
   
+  // configure user routes
+  usersRoutes.configure({
+    users: usersModel
+    , passport: passport
+  })
+  
+}
+
+exports.inheritConstant = function(parentConst) {
+    _.each(parentConst, function(value, key) {
+       CONST.key = value 
+    })
+}
+
+exports.adpMongoConnect = function(config, callback) {
+  mongoConnect.connect(config.MONGODB_URI, function(err) {
+  if(err) return callback(err)
+  
+  return callback()
+})
+}
+
+exports.adpInitRoutes = function(config) {
+  //app routes
+  app.get('/', routes.index)
+  
+  //handle logout
+  app.get('/logout', usersRoutes.doLogout)
+  
+  //check registered client and do login
+  app.get('/initshopify'
+    , usersRoutes.initShopify
+    , passport.authenticate('local', {failureRedirect: '/', failureFlash: true})
+    , usersRoutes.postLogin)
+  
+  //redirect uri to get access token
+  app.get('/registerclient'
+    , usersRoutes.registerClient
+    , passport.authenticate('local', {failureRedirect: '/', failureFlash: true})
+    , usersRoutes.postLogin)
+    
+}
 
 exports.app = app
 
-exports.configureApp = function(config) {
+exports.adpConfigureApp = function(config) {
   /*
     viewPath: '/node_modules/ui-product-manager'
     staticPath: '/node_modules/ui-product-manager'
@@ -80,9 +101,12 @@ exports.configureApp = function(config) {
   })
 }
 
-exports.createServer = function (config, callback) {
-  http.createServer(app).listen(app.get('port'), function(){
-    console.log("Express server listening on port " + app.get('port'))
+exports.adpCreateServer = function (config, callback) {
+  var server = http.createServer(app)
+  
+  server.listen(app.get('port'), function(){
+    console.log("Express server: " + JSON.stringify(server.address()))
+    
   })
   
   return callback()

@@ -3,10 +3,14 @@
  * GET home page.
  */
  
-var notes = undefined
-
-exports.configure = function(params) {
-    notes = params.model
+ var _ = require('lodash')
+    , CONST = require("../adpConstants.js") 
+ 
+ 
+exports.inheritConstant = function(parentConst) {
+    _.each(parentConst, function(value, key) {
+       CONST.key = value 
+    })
 }
  
 exports.index = function(req, res) {

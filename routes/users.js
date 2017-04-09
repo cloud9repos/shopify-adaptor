@@ -1,14 +1,21 @@
 'use strict'
 
 var LocalStrategy = require("passport-local").Strategy
-    , CONST = require("../constants.js")
+    , CONST = require("../adpConstants.js")
     , url = require('url')
     , request = require('request')
+    , _ = require('lodash')
     , users = undefined
     , passport = undefined
     , username
     , password
 
+
+exports.inheritConstant = function(parentConst) {
+    _.each(parentConst, function(value, key) {
+       CONST.key = value 
+    })
+}
 
 exports.configure = function(params) {
     users = params.users
@@ -60,6 +67,7 @@ module.exports.doLogout = function(req, res) {
 }
 
 module.exports.initShopify = function(req, res, next) {
+    console.log("initShopify")
     /*
         req.originalUrl: /initshopify?hmac=355eed27b2fe0119611b03628805eef0bb8c24259df4d17f9cd2fa5b5235a3bb&shop=abhi-1.myshopify.com&timestamp=1476598870
     */
@@ -82,7 +90,7 @@ module.exports.initShopify = function(req, res, next) {
                 next()
             }
             else {
-                res.redirect('https://'+ storeName +'.myshopify.com/admin/apps/products-manager-bulk-operations')
+                res.redirect('https://'+ storeName +'.myshopify.com/admin/apps/' + CONST.APP_NAME)
             }
         }
         else {
@@ -96,6 +104,7 @@ module.exports.initShopify = function(req, res, next) {
 }
 
 module.exports.registerClient = function(req, res, next) {
+    console.log("inside registerClient")
     
     var url_parts = url.parse(req.originalUrl, true)
         , storeName = extractStoreName(url_parts.query.shop)

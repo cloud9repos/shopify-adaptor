@@ -15,6 +15,7 @@
     "passport-local": "1.0.*",
     "sequelize": "3.30.*",
     "request": "2.81.*",
+    "lodash": "*",
     "shopify-node-api": "1.7.*"
   }
 }
