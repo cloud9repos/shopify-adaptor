@@ -84,7 +84,7 @@ exports.adpConfigureApp = function(config) {
   
   app.configure(function(){
     app.set('port', process.env.PORT || 3000);
-    app.set('views', __dirname + config.viewPath);
+    app.set('views', path.join(__dirname, config.viewPath));
     app.engine('html', require('ejs').renderFile)
     
     app.use(express.favicon());
