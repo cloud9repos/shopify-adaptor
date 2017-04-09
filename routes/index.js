@@ -9,7 +9,7 @@
  
 exports.inheritConstant = function(parentConst) {
     _.each(parentConst, function(value, key) {
-       CONST.key = value 
+       CONST[key] = value 
     })
 }
  

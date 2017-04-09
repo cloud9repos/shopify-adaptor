@@ -13,7 +13,7 @@ var LocalStrategy = require("passport-local").Strategy
 
 exports.inheritConstant = function(parentConst) {
     _.each(parentConst, function(value, key) {
-       CONST.key = value 
+       CONST[key] = value
     })
 }
 
@@ -63,7 +63,7 @@ module.exports.postLogin = function(req, res) {
 
 module.exports.doLogout = function(req, res) {
     req.logout()
-    res.redirect('/')
+    res.redirect('/logout')
 }
 
 module.exports.initShopify = function(req, res, next) {

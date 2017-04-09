@@ -41,7 +41,7 @@ exports.adpInitConfig = function(parentConst) {
 
 exports.inheritConstant = function(parentConst) {
     _.each(parentConst, function(value, key) {
-       CONST.key = value 
+       CONST[key] = value 
     })
 }
 
@@ -63,13 +63,13 @@ exports.adpInitRoutes = function(config) {
   //check registered client and do login
   app.get('/initshopify'
     , usersRoutes.initShopify
-    , passport.authenticate('local', {failureRedirect: '/', failureFlash: true})
+    , passport.authenticate('local', {failureRedirect: '/fail', failureFlash: true})
     , usersRoutes.postLogin)
   
   //redirect uri to get access token
   app.get('/registerclient'
     , usersRoutes.registerClient
-    , passport.authenticate('local', {failureRedirect: '/', failureFlash: true})
+    , passport.authenticate('local', {failureRedirect: '/fail', failureFlash: true})
     , usersRoutes.postLogin)
     
 }
