@@ -12,28 +12,28 @@ var
   
   // Models
   , mongoConnect = require("./adp-mongoose/mongoConnect")
-  , usersModel = require("./adp-mongoose/users")
+  , storesModel = require("./adp-mongoose/stores")
   
   //Routes
   , routes = require('./routes')
-  , usersRoutes = require("./routes/users")
+  , storesRoutes = require("./routes/stores")
 
 
 
 var app = express();
 
 exports.adpInitConfig = function(parentConst) {
-  usersRoutes.inheritConstant(parentConst)
+  storesRoutes.inheritConstant(parentConst)
   routes.inheritConstant(parentConst)
   
   //passport configuration
-  passport.serializeUser(usersRoutes.serialize)
-  passport.deserializeUser(usersRoutes.deserialize)
-  passport.use(usersRoutes.strategy)
+  passport.serializeStore(storesRoutes.serialize)
+  passport.deserializeStore(storesRoutes.deserialize)
+  passport.use(storesRoutes.strategy)
   
-  // configure user routes
-  usersRoutes.configure({
-    users: usersModel
+  // configure store routes
+  storesRoutes.configure({
+    stores: storesModel
     , passport: passport
   })
   
@@ -58,19 +58,19 @@ exports.adpInitRoutes = function(config) {
   app.get('/', routes.index)
   
   //handle logout
-  app.get('/logout', usersRoutes.doLogout)
+  app.get('/logout', storesRoutes.doLogout)
   
   //check registered client and do login
   app.get('/initshopify'
-    , usersRoutes.initShopify
+    , storesRoutes.initShopify
     , passport.authenticate('local', {failureRedirect: '/fail', failureFlash: true})
-    , usersRoutes.postLogin)
+    , storesRoutes.postLogin)
   
   //redirect uri to get access token
   app.get('/registerclient'
-    , usersRoutes.registerClient
+    , storesRoutes.registerClient
     , passport.authenticate('local', {failureRedirect: '/fail', failureFlash: true})
-    , usersRoutes.postLogin)
+    , storesRoutes.postLogin)
     
 }
 

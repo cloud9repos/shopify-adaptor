@@ -14,10 +14,10 @@ exports.inheritConstant = function(parentConst) {
 }
  
 exports.index = function(req, res) {
-    var user = !!req.user ? req.user : null
-    console.log("check")
+    var store = !!req.store ? req.store : null
+  
     res.render('index.html', {
-        user: user
+        store: store
     })
 }
 
