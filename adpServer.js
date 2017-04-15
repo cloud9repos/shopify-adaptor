@@ -27,8 +27,8 @@ exports.adpInitConfig = function(parentConst) {
   routes.inheritConstant(parentConst)
   
   //passport configuration
-  passport.serializeStore(storesRoutes.serialize)
-  passport.deserializeStore(storesRoutes.deserialize)
+  passport.serializeUser(storesRoutes.serialize)
+  passport.deserializeUser(storesRoutes.deserialize)
   passport.use(storesRoutes.strategy)
   
   // configure store routes
