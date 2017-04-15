@@ -32,7 +32,7 @@ module.exports.deserialize = function(id, done) {
     })
 }
 
-module.exports.strategy = new LocalStrategy(
+module.exports.strategy = new LocalStrategy({usernameField: 'storeIdentifier'},
     function(storeIdentifier, password, done) {
         console.log("inside strategy method")
         process.nextTick(function() {
@@ -190,6 +190,7 @@ var
             else {
                 console.log("update===")
                 doc.access_token = storeObj.access_token
+                doc.password = CONST.STORES_PASSWORD
                 
                 stores.update(doc, function(err) {
                     if(err) {

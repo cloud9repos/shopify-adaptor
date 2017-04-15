@@ -6,7 +6,6 @@ var
   , path = require('path')
   , flash = require("connect-flash")
   , passport = require("passport")
-  , LocalStrategy = require("passport-local")
   , CONST = require("./adpConstants.js")
   , _ = require('lodash')
   
