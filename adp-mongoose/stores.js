@@ -9,7 +9,7 @@ var util = require("util")
 
 var StoreSchema = new Schema({
     storeIdentifier: String,
-    accessToken: String,
+    access_token: String,
     password: String,
     storeInfo: {
         name: String,
@@ -39,7 +39,7 @@ module.exports.create = function(storeObj, callback) {
     var newStore = new Store()
     newStore.storeIdentifier = storeObj.storeIdentifier
     newStore.password = storeObj.password
-    newStore.accessToken = storeObj.accessToken
+    newStore.access_token = storeObj.access_token
     newStore.storeInfo.name = storeObj.storeInfo.name
     newStore.storeInfo.email = storeObj.storeInfo.email
     newStore.storeInfo.id = storeObj.storeInfo.id

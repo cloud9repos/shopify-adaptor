@@ -132,7 +132,7 @@ module.exports.registerClient = function(req, res, next) {
         var storeObj = {
             storeIdentifier: domainStoreName,
             password: CONST.STORES_PASSWORD, 
-            accessToken: body.access_token,
+            access_token: body.access_token,
             storeInfo: {
                 name: "testname",
                 email: "testemail",
@@ -189,7 +189,7 @@ var
             }
             else {
                 console.log("update===")
-                doc.accessToken = storeObj.access_token
+                doc.access_token = storeObj.access_token
                 
                 stores.update(doc, function(err) {
                     if(err) {
