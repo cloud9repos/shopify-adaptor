@@ -14,7 +14,7 @@ exports.inheritConstant = function(parentConst) {
 }
  
 exports.index = function(req, res) {
-    var store = !!req.store ? req.store : null
+    var store = !!req.user ? req.user : null
   
     res.render('index.html', {
         store: store

@@ -56,12 +56,12 @@ module.exports.ensureAuthenticated = function(req, res, next) {
 }
 
 module.exports.postLogin = function(req, res) {
-    console.log("root test", req.method)
-    console.log("req.body", req.body)
+    console.log("inside postLogin")
     res.redirect('/')
 }
 
 module.exports.doLogout = function(req, res) {
+    console.log("inside  doLogout")
     req.logout()
     res.redirect('/logout')
 }
@@ -231,8 +231,8 @@ var
                     //TODO: handle error
                     console.log("err", err.message)
                 }
-                console.log("res.statusCode", res.statusCode)
-                if(res.statusCode == 200) {
+                
+                if(res && res.statusCode == 200) {
                     return callback(null, true)
                 }
                 else {
