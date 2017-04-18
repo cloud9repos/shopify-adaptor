@@ -9,6 +9,8 @@ var util = require("util")
 
 var StoreSchema = new Schema({
     storeIdentifier: String,
+    createdAt: Date,
+    updatedAt: Date,
     access_token: String,
     password: String,
     storeInfo: {
@@ -37,6 +39,7 @@ module.exports.findByStoreIdentifier = function(storeIdentifier, callback) {
 
 module.exports.create = function(storeObj, callback) {
     var newStore = new Store()
+    newStore.createdAt = (new Date()).toString()
     newStore.storeIdentifier = storeObj.storeIdentifier
     newStore.password = storeObj.password
     newStore.access_token = storeObj.access_token
@@ -51,6 +54,7 @@ module.exports.create = function(storeObj, callback) {
 }
 
 module.exports.update = function(storeObj, callback) {
+    storeObj.updatedAt = (new Date()).toString()
     storeObj.save(function(err) {
         if(err) callback(err)
         else callback()
