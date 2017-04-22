@@ -6,6 +6,7 @@ var _ = require('lodash')
 
 
 module.exports.apiCall = function(options, callback) {
+    console.log("inside apiCall")
     /*
     data
     method
@@ -21,12 +22,13 @@ module.exports.apiCall = function(options, callback) {
       access_token: options.access_token, //permanent token 
     });
     
-    shopify[options.method](options.relativeUri, function(err, data, headers){
+    shopify[options.method](options.relativeUri, options.data, function(err, data, headers){
         if(err) {
             console.log("ERROR, apiCall")
             return callback(err)
         }
         console.log("data",data); // Data contains product json information 
         console.log("headers",headers); // Headers returned from request 
+        return callback(null, data)
     });
 }
