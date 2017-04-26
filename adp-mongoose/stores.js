@@ -16,7 +16,8 @@ var StoreSchema = new Schema({
     storeInfo: {
         name: String,
         email: String,
-        id: String
+        id: String,
+        plan_name: String
     }
 })
 
