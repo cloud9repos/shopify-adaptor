@@ -21,7 +21,7 @@ exports.index = function(req, res) {
             store: store
         })
     } else {
-        res.render('confirmCharg.html', {
+        res.render('confirmCharge.html', {
             store: store
         })
     }
