@@ -167,9 +167,9 @@ var
         }
             
         return domainStoreName
-    }
+    },
     
-    , addUpdateStore = function(storeObj, callback) {
+     addUpdateStore = function(storeObj, callback) {
         console.log("inside addUpdateStore")
         stores.findByStoreIdentifier(storeObj.storeIdentifier, function(err, doc) {
             if(err) {
@@ -191,6 +191,7 @@ var
                 console.log("update===")
                 doc.access_token = storeObj.access_token
                 doc.password = CONST.STORES_PASSWORD
+                doc.isChargingConfirmed = storeObj.isChargingConfirmed
                 
                 stores.update(doc, function(err) {
                     if(err) {

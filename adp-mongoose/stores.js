@@ -9,6 +9,7 @@ var util = require("util")
 
 var StoreSchema = new Schema({
     storeIdentifier: String,
+    isChargingConfirmed: Boolean,
     createdAt: Date,
     updatedAt: Date,
     access_token: String,
