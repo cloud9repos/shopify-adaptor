@@ -16,7 +16,7 @@ exports.inheritConstant = function(parentConst) {
 exports.index = function(req, res) {
     var store = !!req.user ? req.user : null
     
-    if(store.isChargingConfirmed) {
+    if(true || store.isChargingConfirmed) {
         res.render('index.html', {
             store: store
         })
