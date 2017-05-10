@@ -9,6 +9,7 @@ var LocalStrategy = require("passport-local").Strategy
     , passport = undefined
     , storeIdentifier
     , password
+    , apiUtil = require('../apiUtil.js')
 
 
 exports.inheritConstant = function(parentConst) {
@@ -128,25 +129,48 @@ module.exports.registerClient = function(req, res, next) {
             console.log("err", err.message)
         }
         
-        // TODO: make call to store and update hard coded values
-        var storeObj = {
-            storeIdentifier: domainStoreName,
-            password: CONST.STORES_PASSWORD, 
-            access_token: body.access_token,
-            storeInfo: {
-                name: "testname",
-                email: "testemail",
-                id: "testid"
-            }
-        }
-        
-        addUpdateStore(storeObj, function(err) {
+        // Create recurring charge
+        var relativeUri = '/admin/recurring_application_charges.json'
+        var opts = {
+                    data: {
+                      "recurring_application_charge": {
+                        "name": "Basic Plan",
+                        "price": 1.99,
+                        "return_url": 'https:\/\/'+ domainStoreName +'.myshopify.com/admin',
+                        "trial_days": 5
+                      }
+                    }, 
+                    method: 'post', 
+                    relativeUri: relativeUri,
+                    myshop: domainStoreName,
+                    access_token: body.access_token
+                }
+                
+        apiUtil.apiCall(opts, function(err, result) {
             if(err) {
-                //TODO 
-                console.log("err 2", err.message)
+                console.log("ERROR, failed to create recurring charge")
             }
-            req.body = {storeIdentifier :  domainStoreName, password : CONST.STORES_PASSWORD}
-            next()
+            
+            // TODO: make call to store and update hard coded values
+            var storeObj = {
+                storeIdentifier: domainStoreName,
+                password: CONST.STORES_PASSWORD, 
+                access_token: body.access_token,
+                storeInfo: {
+                    name: "testname",
+                    email: "testemail",
+                    id: "testid"
+                }
+            }
+            
+            addUpdateStore(storeObj, function(err) {
+                if(err) {
+                    //TODO 
+                    console.log("err 2", err.message)
+                }
+                req.body = {storeIdentifier :  domainStoreName, password : CONST.STORES_PASSWORD}
+                next()
+            })
         })
         
     })
